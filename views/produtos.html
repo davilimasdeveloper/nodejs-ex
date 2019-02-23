@@ -1,0 +1,107 @@
+<div>
+    <div style="margin-top: 10px; margin-bottom: 20px;">
+        <h3 style="text-align: center">{{tituloApp}}</h3>
+    </div>
+    <form class="form-inline">
+        <div class="form-row align-items-center">
+            <button ng-click="produto = {}" type="button" class="btn btn-info my-8 my-sm-2" data-toggle="modal"
+                data-target="#produtoModal">
+                Novo Produto
+            </button>
+        </div>
+    </form>
+    <!--------minha pesquisa-->
+    <input type="text" ng-model="criterioDeBusca" placeholder="O que você deseja buscar?" class="form-control">
+
+    <div class="alert-danger">{{mensagemDeErro}}</div>
+    <table class="table table-hover">
+
+        <tr>
+            <th></th>
+            <th><a class="clicar" style="text-decoration: none" ng-click="ordenarPor('idProduto')">Cod.</a></th>
+
+            <th><a class="clicar" style="text-decoration: none" ng-click="ordenarPor('descricao')">Descriçao</a></th>
+
+            <th><a class="clicar" style="text-decoration: none" ng-click="ordenarPor('nome')">Nome</a></th>
+
+            <th><a class="clicar" style="text-decoration: none" ng-click="ordenarPor('preco')">Preço</a></th>
+
+            <th><a class="clicar" style="text-decoration: none" ng-click="ordenarPor('quantidade')">Quantidade</a></th>
+
+            <th><a class="clicar" style="text-decoration: none" ng-click="ordenarPor('data')">Data</a></th>
+
+            <th><a class="seta" style="text-decoration: none">Ações</a></th>
+        </tr>
+        <tr ng-class="{selecionado: produto.selecionado}"
+            ng-repeat="produto in produtos | filter:criterioDeBusca | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
+            <td><input type="checkbox" ng-model="produto.selecionado"></td>
+            <td>{{produto.idProduto}}</td>
+            <td>{{produto.descricao}}</td>
+            <td>{{produto.nome}}</td>
+            <td>{{produto.preco}}</td>
+            <td>{{produto.quantidade}}</td>
+            <td>{{produto.data | date:'dd/MM/yyyy'}}</td>
+            <td>
+
+                <a href="" ng-click="editarProduto(produto)" ng-disabled="!isProdutoSelecionado(produtos)"><span
+                        style="padding: 3px;" title="Editar Produto" class="fa fa-pencil" data-toggle="modal"
+                        data-target="#produtoModal"></span></a>
+
+                <a href="" ng-click="removerProduto(produto)"><span style="padding: 3px;" title="Remover Produto"
+                        class="fa fa-trash"></span></a>
+            </td>
+        </tr>
+    </table>
+
+    <h5 style="text-align: center" ng-show="!produtos.length">Não existem produto a serem demonstradas. Clique em '
+        Produto' para adicionar!</h5>
+
+    <!----botao add produtos -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="produtoModal" tabindex="-1" role="dialog" aria-labelledby="produtoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="produtoModalLabel">{{!produto.idProduto ? 'Adicionando Produto' :
+                        'Editando
+                        Produto'}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form name="produtoForm" name="produtoForm">
+
+                        <input ng-model="produto.descricao" ng-maxlength="100" class="form-control" type="text"
+                            name="descricao" id="descricao" placeholder="Descriçao">
+
+                        <input ng-model="produto.nome" ng-maxlength="100" class="form-control" type="text" name="nome"
+                            id="nome" placeholder="Nome">
+
+                        <input ng-model="produto.preco" ng-maxlength="100" class="form-control" type="text" name="preco"
+                            id="preco" placeholder="Preço">
+
+                        <input ng-model="produto.quantidade" ng-maxlength="100" class="form-control" type="text"
+                            name="preco" id="quantidade" placeholder="quantidade">
+
+                        <input ng-model="produto.tamanho" ng-maxlength="100" class="form-control" type="text"
+                            name="preco" id="tamanho" placeholder="Tamanho">
+
+                        <input ng-model="produto.data" ng-maxlength="100" class="form-control" type="date" name="data"
+                            id="data">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" ng-click="salvarProduto(produto)"
+                        ng-disabled="produtoForm.$invalid" data-dismiss="modal">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
